@@ -1,0 +1,131 @@
+Money.java:
+----------
+public class Money {
+	private int dollars; // represents dollars
+	private int cents; // represents cents
+	
+	//constructor
+	public Money (){
+		dollars = 0; 
+		cents = 0; 	 
+	}
+	
+	// constructor
+	public Money (int dollars, int cents){
+		this.dollars = dollars;
+		this.cents = cents;
+	}
+	
+	// mutator
+	public void setMoney (int dollars, int cents){
+		this.dollars = dollars;
+		this.cents = cents;
+	}
+	
+	// returns a string with the current $ value
+	public String toString (){
+		return ("$" + dollars + "." + cents);
+	}
+	
+	
+	// accessor
+	public int getDollars (){
+		return dollars;
+	}
+	
+	public int getCents(){
+		return cents;
+	}
+	// adds two money objects and returns the sum 
+	// in a money object.
+	public static Money add (Money a, Money b){
+		int d = a.dollars + b.dollars;
+		int c = a.cents + b.cents;
+		if (c>=100){
+			d = d + c/100;
+			c = c%100;
+		}
+		Money sum = new Money(d,c);
+		return sum;
+	}
+	
+	// subtracts two money objects and returns the 
+	// difference in a money object
+	// precondition - object a must be greater than object b
+	public static Money sub (Money a, Money b){
+		int d = a.dollars - b.dollars;
+		int c = a.cents - b.cents;
+		
+		if (c<0){
+			d = d - 1;
+			c = 100 + c;
+			System.out.println(c);
+		}
+		Money diff = new Money (d,c);
+		return diff;
+			
+	}
+	
+}
+
+Moneyrunner.java:
+----------------
+import java.util.Scanner; 
+
+public class Moneyrunner {
+    public static void main(String[] args) {
+        
+        Scanner input = new Scanner(System.in);
+            Money m1 = new Money(100,0);
+            Money m2 = new Money(45,12);
+            System.out.println(Money.sub(m1,m2));
+        
+            Money m3 = new Money(55,18);
+            Money m4 = new Money(30,99);
+            System.out.println(Money.add(m3,m4));
+        
+            Money m5 = new Money(0,0);
+            Money m6 = new Money(10,50);
+            m5.setMoney(m6.getDollars(), m6.getCents());
+            System.out.println(m5.toString());
+        
+            Money m7 = new Money(110,80);
+            Money m8 = new Money(100,0);
+            if(m7.getDollars() > m8.getDollars()){
+                System.out.println("You do not have enough money.");
+            }
+            else if(m7.getDollars() == m8.getDollars()){
+                if(m7.getCents() > m8.getCents()){
+                System.out.println("You do not have enough money.");
+            }
+        }
+        //If you were to call the money sub method, it would return a negative number
+        
+            Money m9 = new Money(15,18);
+            Money m10 = new Money(30,40);
+            Money m11 = new Money(0,0);
+            
+            String total = "" + Money.add(m9, m10);
+            System.out.println(total);
+            
+            int cents = (Money.add(m9, m10)).getCents();
+            if(cents > 50){
+                System.out.println("Do you wish to round your purchase up for a charitable cause?(Me)");
+                System.out.println("Type 1 for yes");
+                int dec = input.nextInt();
+                if(dec == 1){
+                    m11.setMoney(((Money.add(m9, m10)).getDollars()) + 1,0);
+                    System.out.println(m11.toString());
+                    String charity = "" + Money.sub(m11,(Money.add(m9, m10)));
+                    System.out.println(charity);
+                }
+                else {
+                System.out.println((Money.add(m9, m10)).toString());
+                }
+            }
+            else {
+            System.out.println((Money.add(m9, m10)).toString());
+        }
+    }
+}
+

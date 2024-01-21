@@ -1,0 +1,281 @@
+bList.java:
+----------
+public class bList{
+    public bNode root;
+    public int value; 
+    
+    public bList(int input){
+        this.value = input; 
+        root = new bNode(input);
+    }
+    public static void show(bNode root){
+        if(root == null){
+            return;
+        }
+        show(root.left);
+        System.out.println(root.value);
+        show(root.right);
+    }
+
+    public void insert(bNode node, int data){
+        if (node == null){
+            node = new bNode(data);
+            return;
+        }
+        if (data <= node.value){
+            if (node.left == null){
+                node.left = new bNode(data);
+            } 
+            else{
+                insert(node.left, data);
+            }
+        } 
+        else if (data > node.value){
+            if (node.right == null){
+                node.right = new bNode(data);
+            } 
+            else{
+                insert(node.right, data);
+            }
+        }
+    }
+}
+
+bListChar.java:
+--------------
+import java.util.ArrayList;
+
+public class bListChar {
+    public charNode root;
+    public ArrayList<String> arr = new ArrayList<>();
+    
+    public void setRoot(charNode node) {
+        root = node;
+    }
+    public charNode getRoot() {
+        return root;
+    }
+    public void addOn(charNode current) {
+        addOn(root, current);
+    }
+    
+    public void show(charNode node) {
+        System.out.print(node.value);
+        if (node.left != null) {
+            System.out.println();
+            show(node.left);
+        }
+        if (node.right != null) {
+            System.out.print("  ");
+            show(node.right);
+        }
+    }
+
+    public void addOn(charNode node, charNode current) {
+        if (current.value.compareTo(node.value) <= 0) {
+            if (node.left == null) {
+                node.left = current;
+            } else {
+                addOn(node.left, current);
+            }
+        } else {
+            if (node.right == null) {
+                node.right = current;
+            } else {
+                addOn(node.right, current);
+            }
+        }
+    }
+
+    public void oneChild(charNode node) {
+        if ((node.left != null && node.right == null) || (node.right != null && node.left == null)) {
+            arr.add(node.value);
+        }
+        if (node.left != null) {
+            oneChild(node.left);
+        }
+        if (node.right != null) {
+            oneChild(node.right);
+        }
+    }
+
+    public int countEmpty(charNode node) {
+        if (node == null) {
+            return 1;
+        }
+        return countEmpty(node.left) + countEmpty(node.right);
+    }
+}
+
+bListDepth.java:
+---------------
+class bListDepth extends bList {
+    int maxDepth;
+
+    public bListDepth(int input){
+        super(input);
+        maxDepth = 0;
+    }
+    public int findMaxDepth(bNode node){
+        if (node == null){
+            return 0;
+        } 
+        else{
+            int leftDepth = findMaxDepth(node.left);
+            int rightDepth = findMaxDepth(node.right);
+
+            maxDepth = Math.max(maxDepth, Math.max(leftDepth, rightDepth)+1);
+            return maxDepth;
+        }
+    }
+
+    public void printNodesAtDepth(bNode node, int depth, int currentDepth){
+        if (node == null){
+            return;
+        }
+        if (currentDepth == depth){
+            System.out.println(node.value);
+            return;
+        }
+        if (currentDepth < depth){
+            printNodesAtDepth(node.left, depth, currentDepth + 1);
+        }
+    }
+    public int calcIPL(bNode node, int currentDepth) {
+        if (node == null) {
+            return 0;
+        }
+        return currentDepth + calcIPL(node.left, currentDepth + 1) + calcIPL(node.right, currentDepth + 1);
+    }
+    public int calcEPL(bNode node, int currentDepth) {
+        if (node == null) {
+            return currentDepth;
+        }
+        return calcEPL(node.left, currentDepth + 1) + calcEPL(node.right, currentDepth + 1);
+    }
+}
+
+bNode.java:
+----------
+public class bNode{
+    int value; 
+    bNode left, right; 
+    
+    bNode(int input){
+        this.value = input; 
+        left = null; 
+        right = null; 
+    }
+}
+
+//Binary Trees - Ex: Enloe
+        //Left is less than or equal to
+        //Right is greater than
+        //If the tree is Null, then add the node
+            //E
+        //Then N is added
+            //It is added to the right, because N is greater than E, and the other side of E is Null
+        //Then L is added
+            //Start at the top
+            //It reaches N, the thing after the root but it is NOT NULL
+                //current = current.right; 
+                //Then it can get placed before N, but after E
+        //Then O is added
+            //It goes to the right of E, reaches N, checks if it is greater, it is
+                //It is placed after N
+        //Then E2 is added
+            //It goes to the left of E, because it is equal to
+
+bNodeDepth.java:
+---------------
+class BNodeDepth extends bNode{
+    int depth;
+
+    public BNodeDepth(int input, int depth){
+        super(input);
+        this.depth = depth;
+    }
+
+    @Override
+    public String toString(){
+        return value + " - " + depth;
+    }
+}
+
+bTree.java:
+----------
+import java.util.ArrayList;
+import java.util.Scanner; 
+
+class bTree {
+    public static void main(String[] args){
+        bList binaryTree = new bList(2);
+        bListDepth bTree = new bListDepth(4); 
+        Scanner input = new Scanner(System.in); 
+        System.out.println("Please enter the number of terms you would like in your bTree:"); 
+        int numOfTerms = input.nextInt(); 
+        /*for(int i = 0; i < numOfTerms; i++){
+            System.out.println("Please enter the term you want inserted"); 
+            int term = input.nextInt(); 
+            binaryTree.insert(binaryTree.root, term); 
+        }*/
+        for(int i = 0; i < numOfTerms; i++){
+            System.out.println("Please enter the term you want inserted"); 
+            int term = input.nextInt(); 
+            bTree.insert(bTree.root, term); 
+        }
+        bTree.printNodesAtDepth(bTree.root, 3, 1); 
+        //binaryTree.show(binaryTree.root); 
+        System.out.println(bTree.calcIPL(bTree.root, 1)); 
+        System.out.println(bTree.calcEPL(bTree.root, 1));
+        input.close();
+    }
+    
+}
+
+challenge.java:
+--------------
+import java.util.*;
+
+public class challenge {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter your word in all caps");
+        String word = input.next();
+        
+        ArrayList<String> arr = new ArrayList<>();
+        for(int i = 0; i < word.length(); i++){
+            arr.add(word.substring(i,i+1));
+            System.out.println(arr.get(i));
+        }
+        charNode root = new charNode(word.substring(0,1));
+        bListChar tree = new bListChar();
+        tree.setRoot(root);
+        for(int i = 0; i < word.length(); i++){
+            charNode node = new charNode(arr.get(i));
+            tree.addOn(node);
+        }
+        tree.oneChild(root);
+        
+        System.out.println("These are the One Child Nodes: ");
+        for(int i = 1; i < tree.arr.size(); i++){
+            System.out.print(tree.arr.get(i) + " ");
+        }
+        
+        System.out.println("\nThese are the Empty Nodes: " + (tree.countEmpty(root)-1));  
+    }
+}
+
+charNode.java:
+-------------
+public class charNode{
+    String value;
+    charNode left, right;
+    
+    charNode(String value){
+        this.value = value;
+        left = null;
+        right = null;
+    }
+}
+

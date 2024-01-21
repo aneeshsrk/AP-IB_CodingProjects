@@ -1,0 +1,127 @@
+eList.java:
+----------
+import java.util.ArrayList;
+import java.util.*; 
+
+public  class eList {
+    public eNode root;
+    public ArrayList<Character> arr = new ArrayList<>();
+
+    public eList() {
+        root = new eNode(); 
+    }
+    public void arrList(String str, int i){
+        arr.add(str.charAt(i));
+    }
+    public void show(eNode node) {
+        if (node == null) {
+            return;
+        }
+        show(node.left);
+        System.out.print(node.value + " ");
+        show(node.right);
+    }
+    public int insert(eNode node, int i) {
+        int nextIndex = i+1;
+        //Added Modulo and Hypotenuse 
+        if(arr.get(i) == '+' || arr.get(i) == '-' || arr.get(i) == '*' || arr.get(i) == '%' || arr.get(i) == 'h'){
+            node.value = arr.get(i);
+            node.left = new eNode();
+            node.right = new eNode();
+            nextIndex = insert(node.right, insert(node.left, i+1)); 
+        }
+        //Factorial and Negate
+        else if(arr.get(i) == 'f' || arr.get(i) == 'n'){
+            node.value = arr.get(i); 
+            node.right = new eNode(); 
+            nextIndex = insert(node.right, i+1); 
+        }
+        else{
+            node.value2 = Character.getNumericValue(arr.get(i));
+            node.value = arr.get(i);
+        }
+        return nextIndex;
+    }
+    public void buildTree(){
+        insert(root, 0);
+    }
+
+    public int evaluate(eNode node) {
+        if(node == null){
+            return 0; 
+        }
+        if (Character.isDigit(node.value)) {
+            return Character.getNumericValue(node.value);
+        }
+        int leftVal = evaluate(node.left);
+        int rightVal = evaluate(node.right);
+
+        char operator = node.value;
+        int result = 0;
+        
+        if (operator == '*') {
+            result = leftVal * rightVal;
+        } 
+        else if (operator == '+') {
+            result = leftVal + rightVal;
+        } 
+        else if (operator == '-') {
+            result = leftVal - rightVal;
+        }
+        else if(operator == '%'){
+            result = leftVal % rightVal;
+        }
+        else if(operator == 'h'){
+            result = (int) Math.sqrt(Math.pow(leftVal, 2) + Math.pow(rightVal, 2)); 
+        }
+        else if(operator == 'n'){
+            result = -1 * rightVal; 
+        }
+        else if(operator == 'f'){
+            result = factorial(rightVal); 
+        }
+        return result; 
+    }
+    //method for dealing with factorial
+    public int factorial(int n){
+        if(n == 0){
+            return 1; 
+        }
+        else{
+            return n * factorial(n-1); 
+        }
+    }
+}
+
+eNode.java:
+----------
+public class eNode {
+   char value; 
+   int value2; 
+   eNode left, right; 
+   
+   eNode(){
+       value = ' ';
+       value2 = 0;
+       left = null; 
+       right = null; 
+   }
+}
+
+eTree.java:
+----------
+import java.util.Scanner;
+public class eTree{
+    public static void main(String[] args)
+    {
+        String str = "*35";  
+        eList list = new eList();
+        for(int i = 0; i < str.length(); i++){
+            list.arrList(str, i);
+        }
+        list.buildTree();
+        System.out.println(list.evaluate(list.root));
+        list.show(list.root);
+    }   
+}
+

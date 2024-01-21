@@ -1,0 +1,269 @@
+Linkedlist.java:
+---------------
+import java.util.Scanner; 
+public class Linkedlist {
+    
+    public Node head; 
+    public int listCount;
+    public int total; 
+    
+    public Linkedlist(){
+        head = new Node(4); 
+        listCount = 1; 
+    }
+    public void show(){
+        Node current = head; 
+        while (current.next != null){
+            System.out.print(current.data + "->"); 
+            current = current.next; 
+        }
+        System.out.println("last one -->" + current.data);
+    }
+    public boolean addHead(int d){
+        Node newhead = new Node(d); 
+        newhead.next = head; 
+        head = newhead; 
+        return true; 
+    }
+    public boolean addTail(int d){
+        Node newTail = new Node(d); 
+        Node current = head; 
+        while (current.next != null){
+            current = current.next; 
+        }
+        current.next = newTail;
+        return true; 
+    }
+    public void deleteTail(){
+        Node current = head; 
+        while(current.next.next != null){
+            current = current.next; 
+        }
+        current.next = null;
+    }
+    public void deleteHead(){
+        head = head.next; 
+    }
+
+    public void insert(int d){
+        if(d <= head.data){
+           Node newhead = new Node(d); 
+           newhead.next = head; 
+           head = newhead; 
+        }
+        else{
+            Node newnode = new Node(d); 
+            Node current = head; 
+            while(current.next != null && (d >= current.data && d >= current.next.data)){
+                current = current.next; 
+            }
+            newnode.next = current.next; 
+            current.next = newnode; 
+        }    
+    }
+    public void delete(int d){
+        Node current = head;
+        if(head.data == d){
+            head = head.next; 
+        }
+        else{
+            while(current.next != null && current.next.data != d){
+                current = current.next; 
+            }
+            if(current.next == null){
+                System.out.println("Term not found"); 
+            }
+            else if(current.next.next == null){
+                current.next = null; 
+            }
+            else{
+                current.next = current.next.next; 
+            }
+        } 
+    }
+    //finds the index of a certain term, can handle a null list
+    public void inList(int d){
+        try{
+            Node current = head; 
+            int count = 0;
+            while(current != null && current.data != d){
+                current = current.next;
+                count++; 
+            }
+            if(current.next == null){
+                if(d == current.data){
+                    System.out.println("Term found at " + count); 
+                }
+                else{
+                    System.out.println("Not in the list");  
+                }
+            }
+            else{
+                System.out.println("Term found at " + count); 
+            }
+        }
+        catch(Exception e){
+            System.out.println("Not in the list"); 
+        }
+    }
+    //creates a new linked list that is the reverse of the original
+    public void reverse(){
+        Linkedlist reverse = new Linkedlist();
+        Node current = head;
+        while(current != null){
+            reverse.addHead(current.data);
+            current = current.next;
+        }
+    }
+    public void oddGame(){
+        Scanner input = new Scanner(System.in);
+        try{
+           while(total <= 100){
+               System.out.println("Please enter the number you would like to insert"); 
+               int num = input.nextInt(); 
+               if(num % 2 != 0){
+                  if(num % 5 != 0){
+                     addTail(num);
+                     show(); 
+                  }
+                  else{
+                     addHead(num*2);
+                     show(); 
+                  }
+                  calcTotal(); 
+               }
+               else if(num % 2 == 0){
+                  if(num % 5 != 0){
+                    deleteTail(); 
+                    show(); 
+                  }
+                  else{
+                    deleteHead();
+                    show(); 
+                  }
+                  calcTotal(); 
+               }
+               calcTotal(); 
+            }
+            show();
+            System.out.println(calcTotal());  
+        }
+        catch(Exception e){
+            System.out.println("The list is Null"); 
+        }
+    }
+    public int calcTotal(){
+        Node current = head;
+        total = 0; 
+        do{
+            total += current.data;
+            current = current.next; 
+        } while (current != null);
+        
+        return total; 
+    }
+}
+
+Lisp.java:
+---------
+import java.util.Scanner; 
+
+public class Lisp {
+    public static void main(String[] args) {
+        Linkedlist potter = new Linkedlist(); 
+        potter.addHead(2); 
+        potter.addHead(-2); 
+        potter.addHead(-10);
+        potter.addTail(15); 
+        potter.insert(15);
+        potter.show(); 
+        
+        //Listmenu Program
+        Scanner input = new Scanner(System.in);
+        System.out.println("Welcome to the Lisp Program");
+        System.out.println("Please enter whether you would like a stack or queue");
+        String choice = input.nextLine();
+        if(choice.equals("stack")){
+            System.out.println("User is in Stack mode"); 
+            System.out.println("Please enter the node you would like to insert");
+            int choice2 = input.nextInt();
+            
+            potter.addHead(choice2);
+            System.out.println("Linkedlist after push:");
+            potter.show(); 
+            potter.deleteHead();
+            System.out.println("Linkedlist after pop:");
+            potter.show();
+        }
+        else if(choice.equals("queue")){
+            System.out.println("User is in Queue mode"); 
+            System.out.println("Please enter the node you would like to insert");
+            int choice2 = input.nextInt();
+            
+            potter.addTail(choice2);
+            System.out.println("Linkedlist after push:");
+            potter.show();
+            System.out.println("Linkedlist after pop:");
+            potter.deleteHead(); 
+            potter.show();
+        }
+        System.out.println("Please enter the node you would like to search for");
+        int choice3 = input.nextInt();
+        potter.inList(choice3);
+        potter.reverse();
+    }
+}
+
+Listmenu.java:
+-------------
+import java.util.Scanner; 
+public class Listmenu {
+    public static void main(String[] args) {
+        Linkedlist potter = new Linkedlist(); 
+        potter.show(); 
+        potter.addHead(2); 
+        potter.show(); 
+        potter.addHead(-2); 
+        potter.addHead(-10); 
+        potter.show(); 
+        potter.addTail(15); 
+        potter.show();
+        potter.insert(3); 
+        potter.show(); 
+        
+        //Listmenu Program
+        Scanner input = new Scanner(System.in);
+        System.out.println("Welcome to the Linked List Menu");
+        System.out.println("Please enter the node you would like to insert");
+        int choice = input.nextInt();
+        potter.insert(choice);
+
+        System.out.println("Next, please enter the node you would like to delete");
+        int choice2 = input.nextInt();
+        potter.delete(choice2);
+        
+        input.close();
+        potter.show(); 
+    }
+}
+
+Node.java:
+---------
+public class Node {
+    int data; 
+    Node next = null; 
+    public Node (int d){
+        data = d;
+    }
+}
+
+OddMenu.java:
+------------
+import java.util.Scanner;
+public class OddMenu {
+    public static void main(String[] args) {
+        Linkedlist L = new Linkedlist();
+        L.oddGame();
+    }
+}
+

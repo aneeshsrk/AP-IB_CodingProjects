@@ -1,0 +1,95 @@
+public class BikeInterface {
+        
+    public static void main (String[] args) {
+      
+        // creating an instance of Bicycle 
+        // doing some operations 
+        Bicycle bicycle = new Bicycle();
+        bicycle.changeGear(2);
+        bicycle.speedUp(3);
+        bicycle.applyBrakes(1);
+          
+        System.out.println("Bicycle present state :");
+        bicycle.printStates();
+          
+        // creating instance of the bike.
+        Bike bike = new Bike();
+        bike.changeGear(1);
+        bike.speedUp(4);
+        bike.applyBrakes(3);
+        bike.startEngine("start"); 
+          
+        System.out.println("Bike present state :");
+        bike.printStates();
+    }
+}
+interface Vehicle {
+    
+    public void speedUp(int a); 
+    
+    public void changeGear(int a); 
+    
+    public void applyBrakes(int a); 
+
+}
+interface Motorbike {
+    
+    public void startEngine(String startStop);  
+    
+}
+
+class Bicycle implements Vehicle {
+    
+    public int speed; 
+    
+    public int gear; 
+    
+    public void speedUp(int a){
+        speed += 3*a;   
+    }
+    public void changeGear(int a){
+        gear = a; 
+    }
+    public void applyBrakes(int a){
+        speed -= a; 
+    }
+    
+    public void printStates(){
+        System.out.println("The speed of the bicycle is " + speed + " and it is in the " + gear + " gear"); 
+    }
+}
+
+class Bike implements Vehicle, Motorbike{
+    
+    public int speed; 
+    
+    public int gear;
+    
+    public String isStarted; 
+    
+    public void speedUp(int a){
+        speed += 3*a; 
+    }
+    public void changeGear(int a){
+        gear = a; 
+    }
+    public void applyBrakes(int a){
+        int oldSpeed = speed; 
+        speed -= a;
+        if (speed < 0){
+            speed = oldSpeed; 
+        }
+    }
+    public void startEngine(String startStop){
+        if(startStop == "start"){
+            isStarted = ". The engine of the Bike is started. "; 
+        }
+        if(startStop == "stop"){
+            isStarted = ". The engine of the Bike is stopped. "; 
+        }
+    }
+    
+    public void printStates(){
+        System.out.println("The speed of the bicycle is " + speed + " and it is in the " + gear + " gear" + isStarted);  
+    }
+}

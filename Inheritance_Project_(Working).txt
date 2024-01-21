@@ -1,0 +1,96 @@
+class Meal {
+    private String veggies;
+    private String grains;
+    private String fruits;
+
+    public Meal(String veggies, String grains, String fruits) {
+        this.veggies = veggies;
+        this.grains = grains;
+        this.fruits = fruits;
+    }
+
+    public String getVeggies() {
+        return veggies;
+    }
+
+    public String getGrains() {
+        return grains;
+    }
+
+    public String getFruits() {
+        return fruits;
+    }
+}
+
+class Vegetarian extends Meal {
+    private String dairy;
+
+    public Vegetarian(String veggies, String grains, String fruits, String dairy) {
+        super(veggies, grains, fruits);
+        this.dairy = dairy;
+    }
+
+    public String getDairy() {
+        return dairy;
+    }
+
+    public String getMealDescription() {
+        return "An example of a healthy vegetarian meal involves these foods and food groups: " + getVeggies() + " as your veggie, " + getGrains() + " as your grain, " + getFruits() + " as your fruit, and " + getDairy() + " as your dairy.";
+    }
+}
+
+class Meat extends Meal {
+    private String dairy;
+    private String protein;
+
+    public Meat(String veggies, String grains, String fruits, String dairy, String protein) {
+        super(veggies, grains, fruits);
+        this.dairy = dairy;
+        this.protein = protein;
+    }
+
+    public String getDairy() {
+        return dairy;
+    }
+
+    public String getProtein() {
+        return protein;
+    }
+
+    public String getMealDescription() {
+        return "An example of a healthy non-vegetarian meal involves these foods and food groups: " + getVeggies() + " as your veggie, " + getGrains() + " as your grain, " + getFruits() + " as your fruit, " + getDairy() + " as your dairy, and " + getProtein() + " as your protein.";
+    }
+}
+
+class Vegan extends Meal {
+    private String meatSub;
+
+    public Vegan(String veggies, String grains, String fruits, String meatSub) {
+        super(veggies, grains, fruits);
+        this.meatSub = meatSub;
+    }
+
+    public String getMeatSub() {
+        return meatSub;
+    }
+
+    public String getMealDescription() {
+        return "An example of a healthy vegetarian meal involves these foods and food groups: " + getVeggies() + " as your veggie, " + getGrains() + " as your grain, " + getFruits() + " as your fruit, and " + getMeatSub() + " as your dairy.";
+    }
+
+}
+public class HealthyMeal{
+    public static void main(String[] args) {
+        Meal meal1 = new Vegetarian("Carrots", "Rice", "Kiwi", "Milk");
+        System.out.println("1. " + ((Vegetarian) meal1).getMealDescription());
+
+        Meal meal2 = new Meat("Broccoli", "Quinoa", "Blueberries", "Cheese", "Chicken");
+        System.out.println("2. " + ((Meat) meal2).getMealDescription());
+
+        Meal meal3 = new Vegan("Kale", "Brown Rice", "Oranges", "Impossible Sausage");
+        System.out.println("3. " + ((Vegan) meal3).getMealDescription()); 
+
+        Meal meal4 = new Meat("Asparagus", "Brown Rice", "Strawberries", "Milk", "Beef");
+        System.out.println("4. " + ((Meat) meal4).getMealDescription());
+    }
+}

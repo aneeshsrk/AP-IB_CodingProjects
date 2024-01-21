@@ -1,0 +1,111 @@
+ALUtil.java:
+-----------
+import java.util.*; 
+public class ALUtil {
+    public static boolean reverse (ArrayList <ComplexNum> list) {
+        ArrayList <ComplexNum> temp = new ArrayList <ComplexNum> ();
+        for (int i = list.size() - 1; i >= 0; i--) {
+            temp.add(list.get(i));
+        }
+        list.clear();
+        for (int i = 0; i < temp.size(); i++) {
+            list.add(temp.get(i));
+        }
+        return true;  
+    }
+    public static boolean popQ (ArrayList <ComplexNum> list) {
+        list.remove(0);
+        return true;
+    }
+    public static boolean push (ArrayList <ComplexNum> list, ComplexNum num) {
+        list.add(0, num);
+        return true;
+    }
+    public static boolean popS (ArrayList <ComplexNum> list) {
+        list.remove(list.size() - 1);
+        return true;
+    }
+        
+}
+
+ComplexNum.java:
+---------------
+public class ComplexNum implements Comparable<ComplexNum>{
+    private double real;
+    private double complex;
+    private double r;
+
+    public ComplexNum(double real, double complex) {
+        this.real = real;
+        this.complex = complex;
+        r = Math.sqrt(real*real + complex*complex);
+    }
+
+    public String toString() {
+        if(complex < 0) {
+            return real + " - " + (-1*complex) + "i";
+        } else if(complex == 0) {
+            return "" + real;
+        } else {
+            return real + " + " + complex + "i";
+        }
+    }
+
+    public boolean equals(ComplexNum second) {
+        return Math.abs(this.r - second.r) < 0.01;
+    }
+
+    public int compareTo(ComplexNum second) {
+        return this.equals(second) ? 0 : (this.r < second.r ? -1 : 1);
+    }
+
+    public ComplexNum plus (ComplexNum second) {
+        second.real += this.real;
+        second.complex += this.complex;
+        return second;
+    }
+
+    public ComplexNum minus (boolean popQ) {
+        if(popQ) {
+            this.real = -1*this.real;
+            this.complex = -1*this.complex;
+        }
+        return this;
+    }
+}
+
+Tester.java:
+-----------
+import java.util.*;
+public class Tester {
+    public static void main(String[] args) {
+        ArrayList <ComplexNum> cnList = new ArrayList <ComplexNum>();
+        
+        ComplexNum n1 = new ComplexNum(4,5);
+        ALUtil.push(cnList, n1);
+        
+        for (int i = 1; i<6; i++){
+            int x = 1;
+            if (i % 2 == 0)
+                x = -x;
+            ALUtil.push(cnList, new ComplexNum (i*x, i * i));
+        }
+        System.out.println("1. " + cnList);
+        System.out.println("2. " + ALUtil.popQ(cnList));
+        System.out.println("3. " + ALUtil.popS(cnList));
+        System.out.println("4. " + cnList);
+        ALUtil.reverse(cnList);
+        System.out.println("5. " + cnList);
+        System.out.println("6. " + ALUtil.popS(cnList));
+        ComplexNum n2 = n1.minus(ALUtil.popQ(cnList));
+        System.out.println("7. " + n2.toString());
+        ALUtil.push(cnList, n2);
+        System.out.println("8. " + cnList);
+        ALUtil.reverse(cnList);
+        System.out.println("9. " + cnList);
+        n2 = n1.plus(n2);
+        ALUtil.push(cnList,n2);
+        System.out.println("10. " + cnList);
+    }
+}
+

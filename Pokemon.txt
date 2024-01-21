@@ -1,0 +1,206 @@
+MyProgram.java:
+--------------
+//Amogh Purkuthi
+// April 29, 2022
+// Pokemon!!!
+
+public class MyProgram
+{
+    public static void main(String[] args)
+    {
+        Pokemon p1 = new Pokemon("Jacob Purchase");
+        Pokemon p2 = new Pokemon("Deez_Nuts");
+        p1.menu();
+        p2.menu();
+        
+        System.out.println();
+        
+        if (p1.compareHealth(p2) == 1) {
+            System.out.println(p1.getName() + " has more health than " + p2.getName() + ".");
+        }
+        if (p1.compareHealth(p2) == 0) {
+            System.out.println(p1.getName() + " has the same health as " + p2.getName() + ".");
+        }
+        if (p1.compareHealth(p2) == -1) {
+            System.out.println(p1.getName() + " has less health than " + p2.getName() + ".");
+        }
+        
+        if (p1.compareExperience(p2) == 1) {
+            System.out.println(p1.getName() + " has more experience than " + p2.getName() + ".");
+        }
+        if (p1.compareExperience(p2) == 0) {
+            System.out.println(p1.getName() + " has the same experience as " + p2.getName() + ".");
+        }
+        if (p1.compareExperience(p2) == -1) {
+            System.out.println(p1.getName() + " has less experience than " + p2.getName() + ".");
+        }
+    }
+}
+
+Pokemon.java:
+------------
+import java.util.*;
+
+public class Pokemon {
+    private String name;
+    private int health;
+    private int experience;
+    private static int Max_H = 100;
+    private static int Min_Ex = 0;
+    
+    public Pokemon(String n) {
+        name = n;
+        health = Max_H;
+        experience = Min_Ex;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    public int getHealth() {
+        return health;
+    }
+    public int getExperience() {
+        return experience;
+    }
+    public void fight() {
+        
+        int random = (int)(Math.random() * 3);
+        if (random == 0) {
+            System.out.println(name + " won the fight, lost 5 health and gained 15 experience!");
+            health -= 5;
+            experience += 15;
+        }
+        if (random == 1) {
+            System.out.println(name + " tied in the fight, lost 10 health and gained 10 experience.");
+            health -= 10;
+            experience += 10;
+        }
+        if (random == 2) {
+            System.out.println(name + " lost in the fight, lost 15 health and gained 5 experience.");
+            health -= 15;
+            experience += 5;
+        }
+    }
+    public void rest() {
+        
+        System.out.println(name + " sleeps. He gains 10 health but loses 5 experience.");
+        health += 10;
+        experience -= 5;
+        
+        if (health > Max_H) {
+            health = Max_H;
+        }
+        if (experience < Min_Ex) {
+            experience = Min_Ex;
+        }
+    }
+    
+    public void sex() {
+        
+        int random = (int)(Math.random() * 2);
+        
+        if (random == 0) {
+            System.out.println(name + " had sex at your moms place and won 10 health and 10 experience! Stellar performance!");
+            health += 10;
+            experience += 10;
+        }
+        if (random == 1) {
+            System.out.println(name + " had sex at your moms place and lost 10 health and 10 experience due to a premature ejaculation.");
+            health -= 10;
+            experience -= 10;
+        }
+        
+        if (health > Max_H) {
+            health = Max_H;
+        }
+        if (experience < Min_Ex) {
+            experience = Min_Ex;
+        }
+    }
+    
+    public String toString() {
+        return "Your Pokemon " + name + " currently has " + health + " health and " + experience + " experience.";
+    }
+    
+    boolean broken = false;
+    public void menu() {
+       
+        
+        Scanner input = new Scanner(System.in);
+        
+        while (experience < 100 && health > 0) {
+            System.out.println("_____");
+            System.out.println("Choose an action for your Pokemon " + name + ":\n 1 to view stats:\n 2 to fight:\n 3 to rest:\n 4 to have sex:\n 5 to end game/change pokemon:\n");
+        
+            String inputWord = input.next();
+            
+            while (inputWord.equals("1") == false && inputWord.equals("2") == false && inputWord.equals("3") == false && inputWord.equals("4") == false && inputWord.equals("5") == false) {
+                System.out.println("That was not an option! Enter again: ");
+                inputWord = input.next();
+            }
+            
+            int choice = Integer.parseInt(inputWord);
+        
+            if (choice == 1) {
+                System.out.println(this);
+            } 
+            if (choice == 2) {
+                fight();
+            } 
+            if (choice == 3) {
+                rest();
+            }
+            if (choice == 4) {
+                sex();
+            }
+            if (choice == 5) {
+                broken = true;
+                break;
+            } 
+        }
+        
+        System.out.println("__________");
+        
+        if (broken == true) {
+            System.out.println("ALRIGHT, BE LIKE THAT...");
+        } 
+        
+        else {
+            if (experience >= 100) {
+                System.out.println("Congratulations! Your Pokemon " + name + "isn't dogturd!");
+            }
+            else {
+                System.out.println("Your Pokemon " + name + " is ass!"); 
+            }
+        }
+        
+    }
+    public int compareHealth(Pokemon p) {
+        int thing = 0;
+        if (this.health > p.health) {
+            thing = 1;
+        }
+        if (this.health == p.health) {
+            thing = 0;
+        }
+        if (this.health < p.health) {
+            thing = -1;
+        }
+        return thing;
+    }
+    public int compareExperience(Pokemon p) {
+        int thing = 0;
+        if (this.experience > p.experience) {
+            thing = 1;
+        }
+        if (this.experience == p.experience) {
+            thing = 0;
+        }
+        if (this.experience < p.experience) {
+            thing = -1;
+        }
+        return thing;
+    }
+}
+

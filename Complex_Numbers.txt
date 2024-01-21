@@ -1,0 +1,167 @@
+ComplexNum.java:
+---------------
+public class ComplexNum implements Comparable<ComplexNum>{
+	private double real; // real part
+	private double imag; //imaginary part
+	private double r;
+	private double theta;
+
+
+    public ComplexNum(){
+		real = 0;
+		imag = 0;
+		r = 0;
+		theta = 0;
+	}
+	
+	public ComplexNum(double real, double imag){
+		this.real = real;
+		this.imag = imag;
+		polarize();
+	}
+	
+	// return the real part
+	public double getReal(){
+		return real;
+	}
+	
+	// return the imaginary part
+	public double getImag(){
+		return imag;
+	}
+	
+	//add a complex number to this
+	//complex number. return a ComplexNum
+	public ComplexNum plus(ComplexNum a){	
+	    double re = real;
+	    double im = imag;
+		re += a.getReal();
+		im += a.getImag();
+		ComplexNum bob = new ComplexNum(re,im);
+		return bob;
+	}
+	
+	//subtract the passed object from the calling object
+	// return a complex number.
+	public ComplexNum minus(ComplexNum a){
+	    double re = real;
+	    double im = imag;
+		re -= a.getReal();
+		im -= a.getImag();
+		ComplexNum bob = new ComplexNum(re,im);
+		return bob;
+	}
+	
+	// multiply the passed object by the calling object
+	// return an object that is a complex number
+	public ComplexNum times (ComplexNum a){
+	    double re = real;
+	    double im = imag;
+	    double temp = r;
+		re *= a.getReal();
+		re -= im*a.getImag();
+		im *= a.getReal();
+		im += temp*a.getImag();
+		ComplexNum bob = new ComplexNum(re,im);
+		return bob;
+	}
+	
+	// return the complex conjugate of the object
+	// return an object that is a complex number
+	public ComplexNum conjugate(){
+	    double re = real;
+	    double im = imag;
+	    im -= 2*imag;
+	    ComplexNum bob = new ComplexNum(re,im);
+		return bob;
+	}
+	
+	// return the rationalized version of this 
+	// complex number.
+	// 1/(a+bi) where a+bi is the current object
+	public ComplexNum rationalize(){
+	    double r = real;
+	    double i = imag;
+	    double divisor = Math.pow(Math.hypot(r, i),2);
+	    r /= divisor;
+	    i /= -divisor;
+	    ComplexNum bob = new ComplexNum(r,i);
+		return bob;
+	}
+	
+	// calculate r and theta given a and b
+	public void polarize(){
+		r = Math.hypot(real,imag);
+		theta = Math.atan2(imag,real);
+		return;
+	}
+	
+	//used to see if two complex numbers are equal
+	// two complex numbers are equal if their real parts
+	// and imaginary parts are equal.
+	public boolean equals (ComplexNum second){
+	    boolean equals = false;
+	    double secondR = Math.hypot(second.getReal(), second.getImag());
+	    double difference = Math.abs(r - secondR);
+	    if(difference < 0.01)
+	        equals = true;
+	    return equals;
+	}
+	
+	@Override
+	public int compareTo(ComplexNum second){
+	    double secondR = Math.hypot(second.getReal(), second.getImag());
+	    double difference = r - secondR;
+	    if(difference>0)
+	        return 1;
+	    else if(difference<0)
+	        return -1;
+	    else
+	        return 0;
+	    
+	}
+	
+	// write code here to return a string
+	// in the form a + bi
+	public String toString(){
+	    String str = "";
+	    if(imag>0)
+	        str = String.format("%.2f + %.2fi", real, imag);
+        else if(imag<0)
+	        str = String.format("%.2f - %.2fi", real, Math.abs(imag));
+	    else
+	        str = String.format("%.2f", real);
+	    
+	    return str;
+	}
+}
+
+ComplexRunner.java:
+------------------
+public class ComplexRunner {
+
+	public static void main(String[] args)
+    {
+        ComplexNum x = new ComplexNum (3,4);
+		ComplexNum y = new ComplexNum(9,-1);
+		
+		ComplexNum z = x.plus(y);
+		System.out.println(z);
+		
+		z = y.minus(x);
+		System.out.println(z.toString());
+		
+		z = y.times(x);
+		System.out.println(z);
+		
+		z = x.plus(x);
+		System.out.println(z.toString());
+		
+		System.out.println(z.conjugate());
+		
+		z = y.rationalize();
+		System.out.println(z.toString());
+    }
+
+}
+

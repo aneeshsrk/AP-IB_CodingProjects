@@ -1,0 +1,163 @@
+MyProgram.java:
+--------------
+import java.util.*;
+public class MyProgram
+{
+    public static void main(String[] args)
+    {
+        Scanner out = new Scanner(System.in);
+        System.out.println("Please enter your name:");
+        String SupiName = out.nextLine();
+        Sup Supi1 = new Sup(SupiName);
+        while (true) {
+            Supi1.menu();
+        }
+    }
+}
+
+Sup.java:
+--------
+import java.util.*;
+public class Sup{
+    Scanner out = new Scanner(System.in);
+    private String name;
+    private int health;
+    private int fame;
+    private static int MAX_HEALTH = 100;
+    private static int MIN_fame = 0;
+    public Sup(String n) {
+        name = n;
+        fame = MIN_fame;
+        health = MAX_HEALTH;
+    }
+    //
+    public int getSupifame() {
+        return fame;
+    }
+    public int getSupiHealth() {
+        return health;
+    }
+    public String getSupiName() {
+        return name;
+    }
+    //
+    public void laservision() {
+        int max = 20;
+        if (fame > 20) {
+            int amount = fame;
+            while (amount > 0) {
+                max+= 1;
+                amount= amount - 2;
+            }
+        }
+        int outcome = (int)(Math.random()*(max));
+        if (outcome < 8+(int)(max/6)) {
+            health -= 20;
+            fame += 10;
+            System.out.println("lost\n -20 health +10 fame");
+        } else if (outcome >= 8+(int)(max/5) && outcome <= 13+(int)(max/4)) {
+            health -= 20;
+            fame += 20;
+            System.out.println("tie\n -20 health +20 fame");
+        } else {
+            health -= 10;
+            fame += 30;
+            System.out.println("won\n -10 health +30 fame");
+        }
+        if (health <= 0){
+            end();
+        }
+        if (fame >= 200){
+            win();
+        }
+    }
+    public void SaveSomeone() {
+        health -=20;
+        if (health > MAX_HEALTH) {
+            health = MAX_HEALTH;
+        }
+        fame +=30;
+        if (fame < MIN_fame) {
+            fame = MIN_fame;
+        }
+        System.out.println("-20 heath  +30 fame");
+        if (health <= 0){
+            end();
+        }
+        if (fame >= 200){
+            win();
+        }
+    }
+     public void heal() {
+        health +=20;
+        if (health > MAX_HEALTH) {
+            health = MAX_HEALTH;
+        }
+        fame -=10;
+        if (fame < MIN_fame) {
+            fame = MIN_fame;
+        }
+        System.out.println("+20 heath  -10 fame");
+        if (health <= 0){
+            end();
+        }
+        if (fame >= 200){
+            win();
+        }
+    }
+    public void eatchocolate() {
+        health -=40;
+        if (health > MAX_HEALTH) {
+            health = MAX_HEALTH;
+        }
+        fame +=1;
+        if (fame < MIN_fame) {
+            fame = MIN_fame;
+        }
+        System.out.println("-40 heath  +1 fame");
+        if (health <= 0){
+            end();
+        }
+        if (fame >= 200){
+            win();
+        }
+    }
+    //
+    public void end() {
+        System.out.println("GAME OVER");
+        System.exit(0);
+    }
+    public void win() {
+        System.out.println("YOU WIN");
+        System.exit(0);
+    }
+    //
+    public String toString(){
+        return ("Name "+name+"\nHachP "+health+"\nfame:"+fame);
+    }
+    public void menu() {
+        System.out.println("------------------------------------\n\"Heal\" (gain health back for fame)\n\"Laser\" - Shoots a laser!\n\"Eat\" - Eat a chocolate (You lose a lot of hp for barely any fame???) \n\"Save\" - Save someone (lose health for a lot of fame)\n\"stats\" - View Superhero Stats\n\"end\" - End Game");
+        String input = out.nextLine();
+        if (input.equalsIgnoreCase("Laser")){
+            System.out.println("you shoot lasers!");
+            laservision();
+        } else if (input.equalsIgnoreCase("heal")){
+            System.out.println("you heal yourself");
+            heal();
+        } else if (input.equalsIgnoreCase("save")){
+            System.out.println("you saved someone!");
+            SaveSomeone();
+        } else if (input.equalsIgnoreCase("eat")){
+            System.out.println("you ate a chocolate???");
+            eatchocolate();
+        } else if (input.equalsIgnoreCase("stats")){
+            System.out.println(toString());
+        } else if (input.equalsIgnoreCase("end")){
+            System.out.println("     GAME OVER\nYou had:"+fame+" fame and "+health+" Heath");
+            System.exit(0);
+        } else {
+            System.out.println("not input");
+        }
+    }
+}
+

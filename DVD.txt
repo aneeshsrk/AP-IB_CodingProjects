@@ -1,0 +1,135 @@
+import java.util.*;
+import java.lang.*;
+public class MyProgram
+{
+    //Color codes
+    public static final String BLUE_TEXT = "\u001B[34m";
+    public static final String RED_TEXT = "\u001B[31m";
+    public static final String GREEN_TEXT = "\u001B[32m";
+    public static final String CYAN_TEXT = "\u001B[36m";
+    public static final String PURPLE_TEXT = "\u001B[35m";
+    public static final String YELLOW_TEXT = "\u001B[33m";
+    public static final String WHITE_TEXT = "\u001B[37m";
+    public static final String RESET_TEXT = "\u001B[0m";
+    
+    public static void main(String[] args) throws InterruptedException
+    {
+        //Change numbers in here to change screen size
+        int screenSizeX = 116;
+        int screenSizeY = 24;
+        //The speed in ms
+        int speedMs = 100;
+        
+        
+        //Direction Variables
+        int speedX = 1;
+        int speedY = 1;
+        //X and Y values basically
+        //1,1 gets a ton of corner hits
+        int posOver = 58;
+        int posDown = 11;
+        //Colored dvd logos
+        String[][] dvd = {{
+        BLUE_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        BLUE_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        BLUE_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        BLUE_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        BLUE_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        BLUE_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        BLUE_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"},
+        {RED_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        RED_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        RED_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        RED_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        RED_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        RED_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        RED_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"},
+        {GREEN_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        GREEN_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        GREEN_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        GREEN_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        GREEN_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        GREEN_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        GREEN_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"},
+        {CYAN_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        CYAN_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        CYAN_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        CYAN_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        CYAN_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        CYAN_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        CYAN_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"},
+        {PURPLE_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        PURPLE_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        PURPLE_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        PURPLE_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        PURPLE_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        PURPLE_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        PURPLE_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"},
+        {YELLOW_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        YELLOW_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        YELLOW_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        YELLOW_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        YELLOW_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        YELLOW_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        YELLOW_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"},
+        {RESET_TEXT+"⠀ ⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⡀",
+        RESET_TEXT+" ⢠⣿⣿⡿⠀⠀⠈⢹⣿⣿⡿⣿⣿⣇⠀⣠⣿⣿⠟⣽⣿⣿⠇⠀⠀⢹⣿⣿⣿",
+        RESET_TEXT+"⠀⢸⣿⣿⡇⠀⢀⣠⣾⣿⡿⠃⢹⣿⣿⣶⣿⡿⠋⢰⣿⣿⡿⠀⠀⣠⣼⣿⣿⠏",
+        RESET_TEXT+"⠀⣿⣿⣿⣿⣿⣿⠿⠟⠋⠁⠀⠀⢿⣿⣿⠏⠀⠀⢸⣿⣿⣿⣿⣿⡿⠟⠋⠁",
+        RESET_TEXT+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ ⣀⣀⣀⣸⣟⣁⣀⣀⡀",
+        RESET_TEXT+"⣠⣴⣶⣾⣿⣿⣻⡟⣻⣿⢻⣿⡟⣛⢻⣿⡟⣛⣿⡿⣛⣛⢻⣿⣿⣶⣦⣄⡀",
+        RESET_TEXT+"⠉⠛⠻⠿⠿⠿⠷⣼⣿⣿⣼⣿⣧⣭⣼⣿⣧⣭⣿⣿⣬⡭⠾⠿⠿⠿⠛⠉"}
+        };
+        int color = 0;
+        //Actually running
+        while (true) {
+            //Bouncing at the corners
+            if (posOver >= screenSizeX) {
+                speedX = -1;
+                color+=1;
+            }
+            if (posOver <= 0){
+                speedX = 1;
+                color+=1;
+            }
+            if (posDown >= screenSizeY) {
+                speedY = -1;
+                color+=1;
+            }
+            if (posDown <= 0){
+                speedY = 1;
+                color+=1;
+            }
+            //No out of bounds for you
+            if (color >= dvd.length) {
+                color = 0;
+            }
+            //Doing the y value
+            for (int i = 0; i < posDown; i++){
+                System.out.println();
+            }
+            //Print the logo
+            printyThingy(posOver,dvd[color]);
+            //Fix coordinates
+            posOver+=speedX;
+            posDown+=speedY;
+            //Finishing the print and clearing for the next
+            Thread.sleep(speedMs);
+            clearScreen();
+        }
+    }
+    public static void printyThingy(int ov, String[] dvd) {
+        //Prints the colored dvd logo it's given & does x value
+        for(int i = 0; i < dvd.length; i++){
+            for(int b = 0; b < ov; b++){
+                System.out.print(" ");
+            }
+            System.out.print(dvd[i]);
+            System.out.println();
+        }
+    }
+    public static void clearScreen() {
+        //Take a wild guess
+        System.out.print("\033[H\033[2J");
+    }
+}

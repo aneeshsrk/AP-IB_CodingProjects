@@ -1,0 +1,107 @@
+import java.util.*;
+
+abstract class Bike {
+
+    protected String name;
+    public int speed;
+
+    public Bike(String name) {
+        this.name = name;
+        this.speed = 0;
+    }
+
+    public Bike(String name, int speed) {
+        this.name = name;
+        this.speed = speed;
+    }
+
+    public void applyBrake(int decrement) {
+        speed -= decrement;
+    }
+
+    public void speedUp(int increment) {
+        speed += increment;
+    }
+
+    public String toString() {
+        return "The name of the bike is " + name + ", and the speed of the bicycle is " + speed;
+    }
+}
+
+class MountainBike extends Bike {
+
+    public int gears;
+    public int suspensionHeight;
+
+    public MountainBike(String name, int speed, int gears, int suspensionHeight) {
+        super(name, speed);
+        this.gears = gears;
+        this.suspensionHeight = suspensionHeight;
+    }
+
+    // Unique methods
+    public void lowerSuspension(int decrement) {
+        suspensionHeight -= decrement;
+    }
+
+    public void raiseSuspension(int increment) {
+        suspensionHeight += increment;
+    }
+
+    public String toString() {
+        return super.toString() + ". The number of gears it has is " + gears + " and the suspension height is " + suspensionHeight;
+    }
+}
+
+class MotorBike extends MountainBike {
+    private int motorSize;
+    public String isRunning;
+
+    public MotorBike(String name, int speed, int gears, int suspensionHeight, int motorSize) {
+        super(name, speed, gears, suspensionHeight);
+        this.motorSize = motorSize;
+        this.isRunning = "the motor is not running"; // Initialize isRunning
+    }
+
+    public void startStop(String startStop) {
+        if (startStop.equals("start")) {
+            isRunning = "the motor is running";
+        } else if (startStop.equals("stop")) {
+            isRunning = "the motor is not running";
+        }
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ". It has a " + motorSize + "cc motor, and " + isRunning;
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Please enter, in this order, the type of bike you have ('motorbike' or 'mountainbike'), the name of your bike, the speed of your bike, the number of gears it has, and the suspension height. If applicable, enter the size of the motor, and whether you want it 'running', or 'off'. Enter each piece of info on a new line below:");
+
+        String type = input.nextLine();
+        String name = input.nextLine();
+        int speed = input.nextInt();
+        int gears = input.nextInt();
+        int suspensionHeight = input.nextInt();
+
+        if (type.equals("motorbike")) {
+            int motorSize = input.nextInt();
+            input.nextLine(); // Consume the newline character
+            String isRunning = input.nextLine();
+
+            MotorBike motorBike = new MotorBike(name, speed, gears, suspensionHeight, motorSize);
+            if (isRunning.equals("running")) {
+                motorBike.startStop("start");
+            }
+            System.out.println(motorBike);
+        } else if (type.equals("mountainbike")) {
+            MountainBike mountainBike = new MountainBike(name, speed, gears, suspensionHeight);
+            System.out.println(mountainBike);
+        }
+    }
+}

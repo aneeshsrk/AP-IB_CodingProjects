@@ -1,0 +1,125 @@
+MyProgram.java:
+--------------
+import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.io.File;
+public class MyProgram{
+    public static void main(String[] args) throws FileNotFoundException
+    {
+       Scanner input = new Scanner(System.in);
+       System.out.println("Please enter 5 integers");
+       double sum = 0; 
+       for(int i=0; i<5; i++){
+           sum += input.nextInt();  
+       }
+       System.out.println(sum/5);
+       MyProgram2.main(args);
+       MyProgram3.main(args);
+       MyProgram4.main(args); 
+    }
+}
+
+MyProgram2.java:
+---------------
+import java.util.*; 
+public class MyProgram2 {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in); 
+        String answer = "Y"; 
+        int sum = 0;
+        int times = 0; 
+        do {
+            System.out.println ("Enter a number");
+            sum += input.nextInt();
+            System.out.println("Do you have another number?(Enter Y or N)"); 
+            answer = input.next();
+            times += 1; 
+        } while (answer.equals("Y"));
+        System.out.println("Your average is" + sum/times); 
+    }
+}
+
+MyProgram3.java:
+---------------
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+public class MyProgram3
+{
+    public static void main(String[] args) throws FileNotFoundException
+    {
+
+        File data = new File("data.txt");
+
+        System.out.println(""); 
+
+        Scanner sc = new Scanner(data);
+        double sum = 0; 
+        double num = 0; 
+        while (sc.hasNextLine())
+            {
+                int input = sc.nextInt();
+                sum += input;
+                num += 1; 
+                System.out.println(input);
+            }
+        double average = sum/num; 
+        sc.close();
+        System.out.printf("Your average is %.3f%n", average); 
+        
+         
+   
+    }
+}
+
+MyProgram4.java:
+---------------
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+public class MyProgram4
+{
+    public static void main(String[] args) throws FileNotFoundException
+    {
+        File data = new File ("data1.txt");
+        
+        Scanner sc = new Scanner (data);
+        int counter = 0;
+        int sum = 0;
+        // read a line from the file
+        while (sc.hasNextLine()){
+            // actually reads a line from the file
+            String input = sc.nextLine();
+            //System.out.println(input);
+            
+            // parse the string using a scanner object
+            Scanner sc2 = new Scanner (input);  
+            sc2.useDelimiter(",");
+            
+            while (sc2.hasNext()){
+                //System.out.println(sc2.next());
+                int x = sc2.nextInt();
+                System.out.println(x);
+                counter++;
+                sum += x;
+            }
+        sc2.close();
+        }
+        double average = sum/counter; 
+        System.out.printf("The average of the numbers is %.3f", average); 
+    }
+            
+}
+
+data.txt:
+--------
+6 32 44 95 327
+
+data1.txt:
+---------
+1,2,3,4,88
+7,7,8,12
+3,-4,-9,12
+99,88,44
+55,88,72
+

@@ -1,0 +1,91 @@
+MyProgram.java:
+--------------
+public class MyProgram
+{
+    public static void printArr(int [][] arr){
+        for (int [] row : arr){
+            for (int item : row){
+                System.out.printf("%4d", item);
+            }
+            System.out.println();
+        }
+        
+    }
+    public static void main(String[] args)
+    {
+        int [][] m1 = {{1,3,1},{2,4,8}};
+        int [][] m2 = {{6,8,10,6},{5,4,9,8}};
+        int [][] m3 = {{-6,-5,-3,-3,-5},{3,4,4,2,1}};
+        
+        int [][] m4 = Transforms.dilate(m1,4);
+        System.out.println("*** test 1 ***");
+        printArr(m4);
+        
+        int [][] m5 = Transforms.reflect(m2,'x');
+        System.out.println("*** test 2 ***");
+        printArr(m5);
+        
+        int [][] m6 = Transforms.rotate(m3,90);
+        System.out.println("*** test 2 ***");
+        printArr(m6);
+    }
+}
+
+Transforms.java:
+---------------
+public class Transforms{
+public static int[][] Multiply(int[][] x,int[][] y){
+        int[][] newArr = new int[x.length][y[0].length];
+        for(int a = 0; a < x.length; a++){
+            for(int b = 0; b < y[0].length; b++){
+                newArr[a][b] = 0;
+                for (int c = 0; c < x.length; c++) {
+                   newArr[a][b] += x[a][c] * y[c][b];
+                }
+            }
+        }
+        return newArr;
+    }
+    public static int[][] dilate(int[][] arr1, int scaleFactor){
+        int[][] Array = new int [arr1.length] [arr1[0].length];
+        for(int i = 0; i < arr1.length; i++){
+            for(int j = 0; j < arr1[0].length; j++){
+                Array[i][j] = scaleFactor * arr1[i][j];
+            }
+        }
+        return Array;
+    }
+    public  static int[][] rotate(int[][] arr1, int rotationVal){
+        int[][] newArr = new int[2][arr1[0].length];
+        if(rotationVal==90){
+            int[][] arr =  {{0,-1},{1,0}};
+            newArr = Multiply(arr,arr1);
+            return newArr;
+        }
+        else if(rotationVal==180){
+            int[][] arr =  {{-1,0},{0,-1}};
+            newArr = Multiply(arr,arr1);
+            return newArr;
+        }
+        else{
+            int[][] arr = {{0,1},{-1,0}};
+            newArr = Multiply(arr,arr1);
+            return newArr;
+        }
+    }
+    public static int[][] reflect(int[][] arr1, char axis){
+        int[][] newArr = new int[2][arr1[0].length];
+        if (axis == 'y') { 
+            int[][] arr = {{-1,0},{0,1}};
+            newArr = Multiply(arr,arr1);
+            return newArr;
+        }   
+        else{
+            int[][] arr =  {{1,0},{0,-1}};
+            newArr = Multiply(arr,arr1);
+            return newArr;
+        }
+    }
+    
+}
+
