@@ -1,0 +1,274 @@
+MathTicTacToe.java:
+------------------
+import java.util.Scanner;
+public class MathTicTacToe {
+    public int[] bPieces = {1, 3, 5, 7, 9};
+    public int[] rPieces = {2, 4, 6, 8};
+
+    public static int[][] board = new int[3][3];
+    public static char[][] playerMoves = new char[3][3]; 
+    
+    public static void main(String[] args){
+
+        MathTicTacToe game = new MathTicTacToe();
+        Scanner input = new Scanner(System.in); 
+        boolean playerHasWon = false; 
+        int i = 0;
+        while(playerHasWon == false){
+            System.out.println("Enter your row Player B");
+            int move1 = input.nextInt();
+            System.out.println("Enter your column Player B");
+            int move2 = input.nextInt();
+            game.enterMove(move1, move2, 'B', i);
+            if((move1 < 3 && move2 < 3) && (playerMoves[move1][move2] == 'B' || playerMoves[move1][move2] == 'R')){
+                System.out.println("That was an invalid move. As a result, your turn has been skipped."); 
+            }
+            else if (move1 < 3 && move2 < 3){
+                playerMoves[move1][move2] = 'B';
+            } 
+            game.printBoard();
+            if(game.hasBeenWon()){
+                playerHasWon = true; 
+                System.out.println("Player B has won!");
+                break; 
+            }
+
+            System.out.println("Enter your row Player R");
+            int move3 = input.nextInt();
+            System.out.println("Enter your column Player R");  
+            int move4 = input.nextInt();
+            game.enterMove(move3, move4, 'R', i); 
+            if((move3 < 3 && move4 < 3) && (playerMoves[move3][move4] == 'B' || playerMoves[move3][move4] == 'R')){
+                System.out.println("That was an invalid move. As a result, your turn has been skipped."); 
+            }
+            else if (move3 < 3 && move4 < 3){
+                playerMoves[move3][move4] = 'R';
+            } 
+            game.printBoard();
+            if(game.hasBeenWon()){
+                playerHasWon = true; 
+                System.out.println("Player R has won!");
+                break; 
+            }
+            i++; 
+        }
+
+    }
+    public void printBoard() {
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                System.out.print(String.valueOf(board[i][j]) + playerMoves[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+    public void enterMove(int input, int input2, char player, int numOfMoves){
+        if(input < 3 && input2 < 3){
+            if(player == 'B'){
+                for(int i = 0; i < 3; i++){
+                    for(int j = 0; j < 3; j++){
+                        if (i == input && j == input2 && board[i][j] == 0){
+                            board[i][j] =  bPieces[numOfMoves]; 
+                        }
+                    }
+                }  
+            }
+            if(player == 'R'){
+                for(int i = 0; i < 3; i++){
+                    for(int j = 0; j < 3; j++){
+                        if (i == input && j == input2){
+                            board[i][j] = rPieces[numOfMoves]; 
+                        }
+                    }
+                }  
+            }
+        }
+        else{
+            System.out.println("That was an invalid move. As a result, your turn has been skipped.");
+        }
+       
+    }
+    public boolean hasBeenWon(){
+        // Check rows
+        if (board[0][0] + board[0][1] + board[0][2] >= 15 && playerMoves[0][0] == playerMoves[0][1] && playerMoves[0][1] == playerMoves[0][2] ){
+            return true; 
+        }
+        if (board[1][0] + board[1][1] + board[1][2] >= 15 && playerMoves[1][0] == playerMoves[1][1] && playerMoves[1][1] == playerMoves[1][2] ){
+            return true; 
+        }
+        if (board[2][0] + board[2][1] + board[2][2] >= 15 && playerMoves[2][0] == playerMoves[2][1] && playerMoves[2][1] == playerMoves[2][2] ){
+            return true; 
+        }
+        // Check columns
+        if (board[0][0] + board[1][0] + board[2][0] >= 15 && playerMoves[0][0] == playerMoves[1][0] && playerMoves[1][0] == playerMoves[2][0] ){
+            return true; 
+        }
+        if (board[0][1] + board[1][1] + board[2][1] >= 15 && playerMoves[0][1] == playerMoves[1][1] && playerMoves[1][1] == playerMoves[2][1] ){
+            return true; 
+        }
+        if (board[0][2] + board[1][2] + board[2][2] >= 15 && playerMoves[0][2] == playerMoves[1][2] && playerMoves[1][2] == playerMoves[2][2]){
+            return true; 
+        }
+        // Check diagonals
+        if (board[0][0] + board[1][1] + board[2][2] >= 15 && playerMoves[0][0] == playerMoves[1][1] && playerMoves[1][1] == playerMoves[2][2]){
+            return true; 
+        }
+        if (board[0][2] + board[1][1] + board[2][0] >= 15 && playerMoves[0][2] == playerMoves[1][1] && playerMoves[1][1] == playerMoves[2][0]){
+            return true; 
+        }
+        return false;
+    }
+}
+
+PyramidTicTacToe.java:
+---------------------
+import java.util.Scanner;
+
+public class PyramidTicTacToe {
+    public char[][] board = {
+        {'-', '-', '1', '-', '-'},
+        {'-', '2', '3', '4', '-'},
+        {'5', '6', '7', '8', '9'}
+    };
+    public static boolean isDeleted = false; 
+    public static void main(String[] args){
+        PyramidTicTacToe game = new PyramidTicTacToe();
+        Scanner input = new Scanner(System.in);
+        boolean playerHasWon = false; 
+        int i = 0; 
+        while(playerHasWon == false && i < 3){
+            game.printBoard();
+            System.out.println("Enter your move Player X");
+            char moveX = input.next().charAt(0); 
+            game.enterMove(moveX, 'X'); 
+            if(game.hasBeenWon()){
+                playerHasWon = true; 
+                System.out.println("Player X has won!");
+                break; 
+
+            }
+            game.printBoard();
+            System.out.println("Enter your move Player O");
+            char moveO = input.next().charAt(0); 
+            game.enterMove(moveO, 'O');
+            if(game.hasBeenWon()){
+                playerHasWon = true; 
+                System.out.println("Player O has won!");
+                break; 
+            }
+            i++; 
+        }
+        int j = 0; 
+        while(playerHasWon == false){
+            if(j == 0){
+               System.out.println("You have now entered Scamble Mode!"); 
+            }
+            game.printBoard();
+            System.out.println("Enter the piece you would like to move, Player X");
+            char oldPieceX = input.next().charAt(0);
+            System.out.println("Enter your new move, Player X");
+            char moveX = input.next().charAt(0);
+            game.deletePiece(oldPieceX, 'X');
+            if (isDeleted == true){
+                game.enterMove(moveX, 'X');
+            }
+            else if (isDeleted == false){
+                System.out.println("That was an invalid move. As a result, your turn has been skipped.");
+            }
+            isDeleted = false;
+            if(game.hasBeenWon()){
+                playerHasWon = true; 
+                System.out.println("Player X has won!");
+                break; 
+            }
+
+            game.printBoard();
+            System.out.println("Enter the piece you would like to move, Player Y");
+            char oldPieceY = input.next().charAt(0);
+            System.out.println("Enter your new move, Player O");
+            char moveY = input.next().charAt(0);
+            game.deletePiece(oldPieceY, 'O');
+            if (isDeleted == true){
+                game.enterMove(moveY, 'O');
+            }
+            else if (isDeleted == false){
+                System.out.println("That was an invalid move. As a result, your turn has been skipped.");
+            }
+            isDeleted = false;
+            if(game.hasBeenWon()){
+                playerHasWon = true; 
+                System.out.println("Player O has won!");
+                break; 
+            }
+            j++; 
+        }
+        System.out.println("");  
+        input.close(); 
+    }
+    
+    public void enterMove(char input, char player){
+            if(player == 'X'){
+                for(int i = 0; i < 3; i++){
+                   for(int j = 0; j < 5; j++){
+                     if (board[i][j] == input){
+                        board[i][j] = 'X'; 
+                     }
+                   }
+                }  
+            }
+            if(player == 'O'){
+                for(int i = 0; i < 3; i++){
+                   for(int j = 0; j < 5; j++){
+                     if (board[i][j] == input){
+                        board[i][j] = 'O'; 
+                     }
+                   }
+                }  
+            }
+    }
+    public void deletePiece(char input, char player){
+        char[][] steve = {
+            {'-', '-', '1', '-', '-'},
+            {'-', '2', '3', '4', '-'},
+            {'5', '6', '7', '8', '9'}
+        };
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 5; j++){
+                if(steve[i][j] == input && board[i][j] == player){
+                    isDeleted = true;
+                    board[i][j] = input;
+                }
+            }
+        }
+    }
+    public boolean hasBeenWon() {
+        // Check rows
+        if (board[0][2] == board[1][2] && board[1][2] == board[2][2]){
+            return true; 
+        }
+        if (board[0][2] == board[1][1] && board[1][1] == board[2][0]){
+            return true; 
+        }
+        if (board[0][2] == board[1][3] && board[1][3] == board[2][4]){
+            return true; 
+        }
+        if (board[1][1] == board[1][2] && board[1][2] == board[1][3]){
+            return true; 
+        }
+        for(int i = 0; i < 3; i++){
+            if (board[2][i] == board[2][i+1] && board[2][i+1] == board[2][i+2]){
+                return true; 
+            }
+        }
+        return false; // No winner found
+    }
+    public void printBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 5; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+
